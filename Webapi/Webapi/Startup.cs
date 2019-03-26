@@ -6,10 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Webapi.Models;
+using Webapi.Repositories;
+using Webapi.Services;
 
 namespace Webapi
 {
@@ -25,6 +29,18 @@ namespace Webapi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IContactRepository, ContactRepository>();
+            services.AddScoped<IContactService, ContactService>();
+            services.AddDbContext<ContactsdbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("AzureDBContext"));
+            }
+            );
+
+            // ignore json serialization
+            services.AddMvc().AddJsonOptions(json =>
+                json.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -35,13 +51,7 @@ namespace Webapi
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
+            
             app.UseMvc();
         }
     }
