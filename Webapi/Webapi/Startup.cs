@@ -33,7 +33,8 @@ namespace Webapi
             services.AddScoped<IContactService, ContactService>();
             services.AddDbContext<ContactsdbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("AzureDBContext"));
+                options.UseSqlServer(Configuration.GetConnectionString("LocalContactsDBContext"))
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             }
             );
 
@@ -51,7 +52,13 @@ namespace Webapi
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+            else
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

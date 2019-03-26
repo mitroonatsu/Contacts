@@ -30,11 +30,6 @@ namespace Webapi.Models
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.0-rtm-35687");
 
-            modelBuilder.Entity<Contact>(entity =>
-            {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-            });
-
             OnModelCreatingPartial(modelBuilder);
         }
 

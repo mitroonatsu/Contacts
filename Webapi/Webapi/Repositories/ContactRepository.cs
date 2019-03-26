@@ -42,8 +42,7 @@ namespace Webapi.Repositories
         public Contact Read(int id)
         {
             //SELECT * FROM CONTACT WHERE ID={id};
-            return _context.Contact
-                .FirstOrDefault(c => c.Id == id);
+            return _context.Contact.FirstOrDefault(c => c.Id == id);
         }
 
         public Contact Update(Contact contact)

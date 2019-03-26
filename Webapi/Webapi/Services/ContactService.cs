@@ -11,9 +11,9 @@ namespace Webapi.Services
     {
         private readonly IContactRepository _contactRepository;
 
-        public ContactService(IContactRepository personRepository)
+        public ContactService(IContactRepository contactRepository)
         {
-            _contactRepository = personRepository;
+            _contactRepository = contactRepository;
         }
 
         public Contact Create(Contact contact)
